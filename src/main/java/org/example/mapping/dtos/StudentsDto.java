@@ -1,6 +1,6 @@
 package org.example.mapping.dtos;
 
-public record StudentsDto(long id,
+public record StudentsDto(Long id_Students,
                           String name,
                           String email,
                           String semester,
