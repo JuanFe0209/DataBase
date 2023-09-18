@@ -8,9 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Builder
-public class Subjects {
-    private Long id_Subjects;
+public class Teacher {
+    private Long id_Teachers;
     private String name;
-    private Teachers teacher;
+    private String email;
 
 }

@@ -1,4 +1,4 @@
 package org.example.services.impl;
 
-public class SubjectsServiceImpl {
+public class SubjectServiceImpl {
 }

@@ -16,9 +16,9 @@ public class Main {
         try (Connection conn = DriverManager.getConnection(url, user,
                 password);
              Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM docentes");
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM teachers");
         ) {
-            System.out.println("docentes: ");
+            System.out.println("teachers: ");
             while (resultSet.next()) {
 
                 System.out.print("id_Grades: "+resultSet.getInt("id"));

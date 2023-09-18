@@ -7,10 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Builder
-public class Grades {
+public class Grade {
     private Long id_Grades;
-    private Students student;
-    private Subjects subject;
+    private Student student;
+    private Subject subject;
     private String corte;
 
 }

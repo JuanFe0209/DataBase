@@ -1,30 +1,29 @@
 package org.example.repository.impl;
 import org.example.conexion.ConexionBD;
-import org.example.domain.models.Grades;
-import org.example.domain.models.Students;
-import org.example.domain.models.Subjects;
-import org.example.domain.models.Teachers;
-import org.example.mapping.dtos.GradesDto;
-import org.example.mapping.mapper.GradesMapper;
+import org.example.domain.models.Grade;
+import org.example.domain.models.Student;
+import org.example.domain.models.Subject;
+import org.example.domain.models.Teacher;
+import org.example.mapping.dtos.GradeDto;
+import org.example.mapping.mapper.GradeMapper;
 import org.example.repository.Repository;
 
-import javax.security.auth.Subject;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GradesRepositoryImpl implements Repository<GradesDto> {
+public class GradeRepositoryImpl implements Repository<GradeDto> {
 
     private Connection getConnection() throws SQLException {
         return ConexionBD.getInstance();
     }
-    private Grades buildObject(ResultSet resultSet) throws
+    private Grade buildObject(ResultSet resultSet) throws
             SQLException {
-        Grades grades = new Grades();
+        Grade grades = new Grade();
         grades.setId_Grades(resultSet.getLong("id_grades"));
         grades.setCorte(resultSet.getString("corte"));
 
-        Students students = new Students();
+        Student students = new Student();
         students.setId_Students(resultSet.getLong("id_students"));
         students.setName(resultSet.getString("name"));
         students.setEmail(resultSet.getString("email"));
@@ -32,11 +31,11 @@ public class GradesRepositoryImpl implements Repository<GradesDto> {
         students.setSemester(resultSet.getString("semester"));
         grades.setStudent(students);
 
-        Subjects subject = new Subjects();
+        Subject subject = new Subject();
         subject.setId_Subjects(resultSet.getLong("id_subject"));
         subject.setName(resultSet.getString("name"));
 
-        Teachers teacher = new Teachers();
+        Teacher teacher = new Teacher();
         teacher.setId_Teachers(resultSet.getLong("id_teacher"));
         teacher.setName(resultSet.getString("name"));
         teacher.setEmail(resultSet.getString("email"));
@@ -48,8 +47,8 @@ public class GradesRepositoryImpl implements Repository<GradesDto> {
     }
 
     @Override
-    public List<GradesDto> list() {
-        List<Grades> gradesList = new ArrayList<>();
+    public List<GradeDto> list() {
+        List<Grade> gradesList = new ArrayList<>();
         try (Statement statement = getConnection().createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT students.id_students ,students.name, students.email," +
                      " students.career, students.semester, subject.name, teachers.name, teachers.email, grades.corte FROM" +
@@ -57,18 +56,18 @@ public class GradesRepositoryImpl implements Repository<GradesDto> {
                      "grades.id_subject=subject.id_subject inner join teachers " +
                      "on subject.id_teacher=teachers.id_teacher;")) {
             while (resultSet.next()) {
-                Grades grades = buildObject(resultSet);
+                Grade grades = buildObject(resultSet);
                 gradesList.add(grades);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return GradesMapper.mapFrom(gradesList);
+        return GradeMapper.mapFrom(gradesList);
     }
 
     @Override
-    public GradesDto byId(Long id) {
-        Grades grades = null;
+    public GradeDto byId(Long id) {
+        Grade grades = null;
         try (PreparedStatement preparedStatement = getConnection()
                 .prepareStatement("SELECT students.id_students ,students.name, students.email, students.career, " +
                         "students.semester, subject.name, teachers.name, teachers.email, grades.corte FROM grades " +
@@ -84,10 +83,10 @@ public class GradesRepositoryImpl implements Repository<GradesDto> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return GradesMapper.mapFrom(grades);
+        return GradeMapper.mapFrom(grades);
     }
     @Override
-    public void update(GradesDto grades) {
+    public void update(GradeDto grades) {
         String sql;
         if (grades.id_Grades() != null && grades.id_Grades() > 0) {
             sql = "UPDATE grades SET id_students=?, id_subject=? , corte=?  WHERE id_grades=?";

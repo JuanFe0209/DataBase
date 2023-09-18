@@ -1,21 +1,21 @@
 package org.example.repository.impl;
 
 import org.example.conexion.ConexionBD;
-import org.example.domain.models.Students;
-import org.example.mapping.dtos.StudentsDto;
-import org.example.mapping.mapper.StudentsMapper;
+import org.example.domain.models.Student;
+import org.example.mapping.dtos.StudentDto;
+import org.example.mapping.mapper.StudentMapper;
 import org.example.repository.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentsRepositoryImpl implements Repository<StudentsDto> {
+public class StudentRepositoryImpl implements Repository<StudentDto> {
     private Connection getConnection() throws SQLException {
         return ConexionBD.getInstance();
     }
-    private Students createStudent(ResultSet rs) throws SQLException {
-        Students student = new Students();
+    private Student createStudent(ResultSet rs) throws SQLException {
+        Student student = new Student();
         student.setId_Students(rs.getLong("id_student"));
         student.setName(rs.getString("nombre"));
         student.setEmail(rs.getString("email"));
@@ -24,24 +24,24 @@ public class StudentsRepositoryImpl implements Repository<StudentsDto> {
         return student;
     }
     @Override
-    public List<StudentsDto> list() {
-        List<Students> studentList = new ArrayList<>();
+    public List<StudentDto> list() {
+        List<Student> studentList = new ArrayList<>();
 
         try (Statement statement = getConnection().createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * from student")) {
             while (resultSet.next()) {
-                Students student = createStudent(resultSet);
+                Student student = createStudent(resultSet);
                 studentList.add(student);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return StudentsMapper.mapFrom(studentList);
+        return StudentMapper.mapFrom(studentList);
     }
 
     @Override
-    public StudentsDto byId(Long id) {
-        Students student = null;
+    public StudentDto byId(Long id) {
+        Student student = null;
         try (PreparedStatement preparedStatement = getConnection()
                 .prepareStatement("SELECT * FROM student WHERE id_student=?")) {
             preparedStatement.setLong(1, id);
@@ -53,11 +53,11 @@ public class StudentsRepositoryImpl implements Repository<StudentsDto> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return StudentsMapper.mapFrom(student);
+        return StudentMapper.mapFrom(student);
     }
 
     @Override
-    public void update(StudentsDto student) {
+    public void update(StudentDto student) {
         String sql;
         if (student.id_Students() != null && student.id_Students()>0) {
             sql = "UPDATE student SET name=?, career=?, email=?, semester=? WHERE id_student=?";

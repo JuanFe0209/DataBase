@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Builder
-public class Students {
+public class Student {
     private Long id_Students;
     private String name;
     private String email;
