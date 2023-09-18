@@ -2,10 +2,11 @@ package org.example.services.impl;
 
 import org.example.mapping.dtos.StudentDto;
 import org.example.repository.impl.StudentRepositoryImpl;
+import org.example.services.StudentService;
 
 import java.util.List;
 
-public class StudentServiceImpl implements StudentsService {
+public class StudentServiceImpl implements StudentService {
     private final StudentRepositoryImpl repository;
 
     public StudentServiceImpl(StudentRepositoryImpl repository) {
