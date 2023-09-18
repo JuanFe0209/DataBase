@@ -13,7 +13,6 @@ public class TeacherServiceImpl implements TeacherService {
     public List<TeacherDto> list() {
         return repo.list();
     }
-
     @Override
     public TeacherDto byId(Long id) {
         return repo.byId(id);
